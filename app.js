@@ -1,12 +1,10 @@
-//app.js
 const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 
-//Socket.io
 const io = require('socket.io')(server);
 io.on("connection", (socket) => {
-  console.log("🔌 New user connected! 🔌");
+  require('./sockets/chat.js')(io, socket);
 })
 
 //app.js
@@ -18,7 +16,7 @@ app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'))
 
 app.get('/', (req, res) => {
-  res.render('index.handlebars');
+  res.render('index');
 })
 
 server.listen('3000', () => {
