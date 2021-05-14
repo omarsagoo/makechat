@@ -1,9 +1,13 @@
 module.exports = (io, socket) => {
-    // Listen for a new user
-    socket.on('new user', (username) => {
-        console.log(`✋ ${username} has joined the chat! ✋`);
-        //Send the username to all clients currently connected
-        io.emit("new user", username);
-    })
 
+    socket.on('new user', (username) => {
+      console.log(`✋ ${username} has joined the chat! ✋`);
+      io.emit("new user", username);
+    })
+  
+    socket.on('new message', (data) => {
+      console.log(`🎤 ${data.sender}: ${data.message} 🎤`)
+      io.emit('new message', data);
+    })
+  
   }
