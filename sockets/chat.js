@@ -1,4 +1,4 @@
-module.exports = (io, socket, onlineUsers) => {
+module.exports = (io, socket, onlineUsers, channels) => {
 
     socket.on('new user', (username) => {
         //Save the username as key to access the user's socket id
@@ -24,14 +24,15 @@ module.exports = (io, socket, onlineUsers) => {
         socket.emit('get online users', onlineUsers);
     })
 
+    socket.on('get channels', () => {
+        //Send over the onlineUsers
+        socket.emit('get channels', channels);
+    })
+
     socket.on('disconnect', () => {
         //This deletes the user by using the username we saved to the socket
         delete onlineUsers[socket.username]
         io.emit('user has left', onlineUsers);
-    });
-
-    socket.on('new channel', (newChannel) => {
-        console.log(newChannel);
     });
 
     socket.on('new channel', (newChannel) => {
@@ -56,5 +57,4 @@ module.exports = (io, socket, onlineUsers) => {
             messages: channels[newChannel]
         });
     });
-
 }
